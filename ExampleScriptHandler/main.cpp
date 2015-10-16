@@ -15,33 +15,35 @@
 //if all conditions are true, all actions will be executed.
 
 
-int main(int argc, char** argv) 
+int main(int argc, char** argv)
 {
 	std::srand(std::time(0));
 	int value = 0;
-	
+
 	// create ScriptHandler
 	flx::ScriptHandler scriptHandler;
-	
+
 	// define a simple Event
-	auto Ever = [&](flx::Params &p, flx::Data &d){
-        return true;
-    };
-    
-    // define a simple Condition
-    auto ValueLimit = [&](flx::Params &p, flx::Data &d){
-        if(p.size() != 1)
-        {
-            std::cout <<"ValueLimit() ERROR: requires exactly 1 argument." << std::endl;
-            return false;
-        }
-        else
-        {
-        	try
-        	{
-        		if(value > std::stoi(p[0]))
-        		{
-        			return true;
+	auto Ever = [&](flx::Params &p, flx::Data &d)
+	{
+		return true;
+	};
+
+	// define a simple Condition
+	auto ValueLimit = [&](flx::Params &p, flx::Data &d)
+	{
+		if(p.size() != 1)
+		{
+			std::cout <<"ValueLimit() ERROR: requires exactly 1 argument." << std::endl;
+			return false;
+		}
+		else
+		{
+			try
+			{
+				if(value > std::stoi(p[0]))
+				{
+					return true;
 				}
 			}
 			catch(std::invalid_argument&)
@@ -50,24 +52,25 @@ int main(int argc, char** argv)
 				return false;
 			}
 		}
-    };
-    
-    // define a simple Action
-    auto Print = [&](flx::Params &p, flx::Data &d){
-        for(auto &s : p)
-        {
-            std::cout << s << std::endl;
-        }
-    };
-    
-    // add to ScriptHandler
-    scriptHandler.addEvent("Ever", Ever);
-    scriptHandler.addCondition("ValueLimit", ValueLimit);
-    scriptHandler.addAction("Print", Print);
-    
-    // load script
-    scriptHandler.loadFile("example.flx");
-		
+	};
+
+	// define a simple Action
+	auto Print = [&](flx::Params &p, flx::Data &d)
+	{
+		for(auto &s : p)
+		{
+			std::cout << s << std::endl;
+		}
+	};
+
+	// add to ScriptHandler
+	scriptHandler.addEvent("Ever", Ever);
+	scriptHandler.addCondition("ValueLimit", ValueLimit);
+	scriptHandler.addAction("Print", Print);
+
+	// load script
+	scriptHandler.loadFile("example.flx");
+
 	while(1)
 	{
 		value = std::rand()%10000;
@@ -75,6 +78,6 @@ int main(int argc, char** argv)
 		scriptHandler.update();
 		std::cin.get();
 	}
-	
+
 	return 0;
 }
