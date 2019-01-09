@@ -190,8 +190,6 @@ namespace flx
             return dyn<T>();
         }
 
-        /* what the heck is that? */
-        /* TODO ask Phil what method () is */
         template<typename T>
         operator T&& () &&
         {
